@@ -12,6 +12,26 @@ class App extends Component {
 
   componentDidMount() {
     this.getLivingRoomState();
+    this.getAllGroups();
+  }
+
+  getAllGroups() {
+    const { endpoint } = ACTIONS.GET_ALL_GROUPS;
+
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(json => {
+        const groups = [];
+
+        for (let groupId in json) {
+          groups.push({
+            id: groupId,
+            data: json[groupId]
+          })
+        }
+
+        this.setState({ groups: groups });
+      })
   }
 
   getLivingRoomState() {
@@ -51,11 +71,22 @@ class App extends Component {
   }
 
   render() {
+    const { groups } = this.state;
+
     return (
       <div>
         <button onClick={this.toggleLivingRoomLights.bind(this)}>
           Toggle Living Room Lights
         </button>
+        { groups
+          ? <ul>
+              { groups.map(group => <li>
+                  { group.data.name } with id { group.id } is currently { group.data.state.all_on ? 'ON' : 'OFF' }
+                </li>
+              )}
+            </ul>
+          : ''
+        }
       </div>
     );
   }
