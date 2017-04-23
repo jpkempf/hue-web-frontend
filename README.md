@@ -6,6 +6,11 @@ to quickly control the Hue lights in your home from a phone or tablet.
 
 I will probably lose interest in this, like, tomorrow and never finish it, so don't hold your breath!
 
+**Getting Started**
+
+- In the `src` folder, update the placeholder values in `default_config.js` and rename the file to `config.js`
+- Run `npm start`
+
 **Additional Notes**
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find a detailed guide of available commands [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
