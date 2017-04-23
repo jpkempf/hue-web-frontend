@@ -1,6 +1,11 @@
 import { BRIDGE_IP, API_KEY } from './config';
 
 const ACTIONS = {
+    GET_LIVING_ROOM_STATUS: {
+        endpoint: `http://${BRIDGE_IP}/api/${API_KEY}/groups/6`,
+        method: 'GET',
+        key: 'all_on'
+    },
     SWITCH_ON_LIVING_ROOM_LIGHTS: {
         endpoint: `http://${BRIDGE_IP}/api/${API_KEY}/groups/6/action`,
         method: 'PUT',

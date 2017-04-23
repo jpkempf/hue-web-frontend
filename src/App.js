@@ -10,6 +10,20 @@ class App extends Component {
     }
   }
 
+  componentDidMount() {
+    this.getLivingRoomState();
+  }
+
+  getLivingRoomState() {
+    const { endpoint } = ACTIONS.GET_LIVING_ROOM_STATUS;
+
+    fetch(endpoint).then(r => r.json()).then(j => {
+      this.setState({
+        areLivingRoomLightsOn: j.state.all_on
+      })
+    })
+  }
+
   toggleLivingRoomLights () {
     const action = this.state.areLivingRoomLightsOn
       ? ACTIONS.SWITCH_OFF_LIVING_ROOM_LIGHTS
@@ -23,14 +37,17 @@ class App extends Component {
 
   successHandler(response) {
     if (response.status === 200) {
-      this.setState({
-        areLivingRoomLightsOn: !this.state.areLivingRoomLightsOn
-      });
-
+      this.toggleState('areLivingRoomLightsOn');
       return;
     }
 
     console.warn('unexpected response status:', response.status);
+  }
+
+  toggleState(key) {
+    this.setState({
+        [key]: !this.state[key]
+      });
   }
 
   render() {
