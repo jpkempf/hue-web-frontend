@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import ACTIONS from './actions';
+import ToggleGroup from './ToggleGroup';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      areLivingRoomLightsOn: false
+      groups: null
     }
   }
 
   componentDidMount() {
-    this.getLivingRoomState();
     this.getAllGroups();
   }
 
@@ -34,40 +34,16 @@ class App extends Component {
       })
   }
 
-  getLivingRoomState() {
-    const { endpoint } = ACTIONS.GET_LIVING_ROOM_STATUS;
+  toggleGroup(id) {
+    const group = this.state.groups.find(_group => _group.id === id);
+    const currentState = group.data.state.all_on;
+    const newState = (!currentState).toString();
 
-    fetch(endpoint).then(r => r.json()).then(j => {
-      this.setState({
-        areLivingRoomLightsOn: j.state.all_on
-      })
-    })
-  }
+    let { endpoint, method, body } = ACTIONS.TOGGLE_GROUP;
+    endpoint = endpoint.replace('{id}', group.id);
+    body = body.replace('{state}', newState);
 
-  toggleLivingRoomLights () {
-    const action = this.state.areLivingRoomLightsOn
-      ? ACTIONS.SWITCH_OFF_LIVING_ROOM_LIGHTS
-      : ACTIONS.SWITCH_ON_LIVING_ROOM_LIGHTS;
-
-    const { endpoint, method, body } = action;
-
-    fetch(endpoint, { method, body })
-      .then(this.successHandler.bind(this))
-  }
-
-  successHandler(response) {
-    if (response.status === 200) {
-      this.toggleState('areLivingRoomLightsOn');
-      return;
-    }
-
-    console.warn('unexpected response status:', response.status);
-  }
-
-  toggleState(key) {
-    this.setState({
-        [key]: !this.state[key]
-      });
+    fetch(endpoint, { method, body }).then(this.getAllGroups.bind(this));
   }
 
   render() {
@@ -75,18 +51,11 @@ class App extends Component {
 
     return (
       <div>
-        <button onClick={this.toggleLivingRoomLights.bind(this)}>
-          Toggle Living Room Lights
-        </button>
-        { groups
-          ? <ul>
-              { groups.map(group => <li>
-                  { group.data.name } with id { group.id } is currently { group.data.state.all_on ? 'ON' : 'OFF' }
-                </li>
-              )}
-            </ul>
-          : ''
-        }
+        { groups ? groups.map(group => <ToggleGroup
+          key={group.id}
+          toggleGroup={this.toggleGroup.bind(this)}
+          {...group}
+        />) : '' }
       </div>
     );
   }
