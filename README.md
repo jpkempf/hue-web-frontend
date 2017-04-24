@@ -4,7 +4,7 @@ The aim of this project is to create a small, touch friendly web interface which
 would allow you or a guest (basically, anyone with access to your local network)
 to quickly control the Hue lights in your home from a phone or tablet.
 
-I will probably lose interest in this, like, tomorrow and never finish it, so don't hold your breath!
+Right now, what you get is a very simple UI that lists all your groups and allows you to toggle each group on or off, as well as set the brightness, saturation and hue.
 
 **Getting Started**
 
