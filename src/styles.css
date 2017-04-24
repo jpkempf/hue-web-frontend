@@ -7,11 +7,33 @@
 }
 
 .wrapper {
+    display: grid;
     margin: .5em;
+    grid-gap: .5em;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media all and (min-width: 50em) {
+    .wrapper {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.group {
+    padding: .5em;
+    border: 1px solid grey;
+}
+
+.group > * + *:not(input) {
+    margin-top: .5em;
 }
 
 label {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+input {
+    width: 100%;
 }
