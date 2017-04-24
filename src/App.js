@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ACTIONS from './actions';
-import ToggleGroup from './ToggleGroup';
+import Group from './Group';
 
 class App extends Component {
   constructor(props) {
@@ -50,8 +50,8 @@ class App extends Component {
     const { groups } = this.state;
 
     return (
-      <div>
-        { groups ? groups.map(group => <ToggleGroup
+      <div className="wrapper">
+        { groups ? groups.map(group => <Group
           key={group.id}
           toggleGroup={this.toggleGroup.bind(this)}
           {...group}
