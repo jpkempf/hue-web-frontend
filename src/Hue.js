@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { HUE_MIN, HUE_MAX, HUE_STEPS } from './config';
+import { HUE_MIN, HUE_MAX } from './config';
 import ACTIONS from './actions';
+
+import { debounce } from 'lodash';
 
 class Hue extends Component {
     constructor(props) {
@@ -9,6 +11,8 @@ class Hue extends Component {
         this.state = {
             currentHue: 0
         }
+
+        this.updateHue = debounce(this.updateHue, 300);
     }
 
     componentDidMount() {
@@ -38,7 +42,6 @@ class Hue extends Component {
                     type="range"
                     min={HUE_MIN}
                     max={HUE_MAX}
-                    step={HUE_STEPS}
                     name="currentHue"
                     value={this.state.currentHue}
                     onChange={event => this.onChange(event)}

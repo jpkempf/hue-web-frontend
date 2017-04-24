@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { BRI_MIN, BRI_MAX, BRI_STEPS } from './config';
+import { BRI_MIN, BRI_MAX } from './config';
 import ACTIONS from './actions';
+
+import { debounce } from 'lodash';
 
 class Brightness extends Component {
     constructor(props) {
@@ -9,6 +11,8 @@ class Brightness extends Component {
         this.state = {
             currentBrightness: 0
         }
+
+        this.updateBrightness = debounce(this.updateBrightness, 300);
     }
 
     componentDidMount() {
@@ -38,7 +42,6 @@ class Brightness extends Component {
                     type="range"
                     min={BRI_MIN}
                     max={BRI_MAX}
-                    step={BRI_STEPS}
                     name="currentBrightness"
                     value={this.state.currentBrightness}
                     onChange={event => this.onChange(event)}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { SAT_MIN, SAT_MAX, SAT_STEPS } from './config';
+import { SAT_MIN, SAT_MAX } from './config';
 import ACTIONS from './actions';
+
+import { debounce } from 'lodash';
 
 class Saturation extends Component {
     constructor(props) {
@@ -9,6 +11,8 @@ class Saturation extends Component {
         this.state = {
             currentSaturation: 0
         }
+
+        this.updateSaturation = debounce(this.updateSaturation, 300);
     }
 
     componentDidMount() {
@@ -19,10 +23,10 @@ class Saturation extends Component {
 
     onChange(event) {
         this.setState({ [event.target.name]: event.target.value });
-        this.updateHue(this.props.id, this.state.currentSaturation);
+        this.updateSaturation(this.props.id, this.state.currentSaturation);
     }
 
-    updateHue(groupId, saturationValue) {
+    updateSaturation(groupId, saturationValue) {
         let { endpoint, method, body } = ACTIONS.UPDATE_GROUP_SATURATION;
         endpoint = endpoint.replace('{id}', groupId);
         body = body.replace('{value}', saturationValue);
@@ -38,7 +42,6 @@ class Saturation extends Component {
                     type="range"
                     min={SAT_MIN}
                     max={SAT_MAX}
-                    step={SAT_STEPS}
                     name="currentSaturation"
                     value={this.state.currentSaturation}
                     onChange={event => this.onChange(event)}
