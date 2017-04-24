@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BRI_MIN, BRI_MAX } from './config';
+import { BRI_MIN, BRI_MAX, BRI_STEPS } from './config';
 import ACTIONS from './actions';
 
 class Brightness extends Component {
@@ -38,7 +38,7 @@ class Brightness extends Component {
                     type="range"
                     min={BRI_MIN}
                     max={BRI_MAX}
-                    step="25"
+                    step={BRI_STEPS}
                     name="currentBrightness"
                     value={this.state.currentBrightness}
                     onChange={event => this.onChange(event)}

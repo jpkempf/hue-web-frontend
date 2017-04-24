@@ -13,7 +13,17 @@ const ACTIONS = {
         endpoint: `${BASE_URL}/groups/{id}/action`,
         method: 'PUT',
         body: '{ "bri": {value} }',
-    }
+    },
+    UPDATE_GROUP_SATURATION: {
+        endpoint: `${BASE_URL}/groups/{id}/action`,
+        method: 'PUT',
+        body: '{ "sat": {value} }',
+    },
+    UPDATE_GROUP_HUE: {
+        endpoint: `${BASE_URL}/groups/{id}/action`,
+        method: 'PUT',
+        body: '{ "hue": {value} }',
+    },
 };
 
 export default ACTIONS;
