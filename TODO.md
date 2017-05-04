@@ -5,6 +5,7 @@
 - refactor actions/endpoints/etc
 - reduce code duplication
 - introduce higher order components
+- fix the hue (color) slider so it behaves properly
 
 ### Later
 
