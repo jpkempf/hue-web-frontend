@@ -9,6 +9,7 @@
 ### Later
 
 - refine ui
+- introduce proptypes
 
 ### Someday
 
@@ -17,3 +18,7 @@
 - allow users to create their own actions for the dashboard
 - persist data via local storage
 - make it a progressive web app
+
+### I'm probably never going to get to this but I can still dream
+
+- Rebuild the entire thing in Elm
