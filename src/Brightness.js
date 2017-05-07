@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { BRI_MIN, BRI_MAX } from './config';
-import ACTIONS from './actions';
-
 import { debounce } from 'lodash';
+
+import { BRI_MIN, BRI_MAX } from './config';
+import ENDPOINTS from './endpoints';
+
+import Slider from './Slider';
 
 class Brightness extends Component {
     constructor(props) {
@@ -22,12 +24,13 @@ class Brightness extends Component {
     }
 
     onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-        this.updateBrightness(this.props.id, this.state.currentBrightness);
+        this.setState({
+            [event.target.name]: event.target.value,
+        }, this.updateBrightness(this.props.id, this.state.currentBrightness));
     }
 
     updateBrightness(groupId, brightnessValue) {
-        let { endpoint, method, body } = ACTIONS.UPDATE_GROUP_BRIGHTNESS;
+        let { endpoint, method, body } = ENDPOINTS.UPDATE_GROUP_BRIGHTNESS;
         endpoint = endpoint.replace('{id}', groupId);
         body = body.replace('{value}', brightnessValue);
 
@@ -35,19 +38,15 @@ class Brightness extends Component {
     }
 
     render() {
-        return (
-            <label>
-                <span>BRI</span>
-                <input
-                    type="range"
-                    min={BRI_MIN}
-                    max={BRI_MAX}
-                    name="currentBrightness"
-                    value={this.state.currentBrightness}
-                    onChange={event => this.onChange(event)}
-                />
-            </label>
-        )
+        const props = {
+            label: 'BRI',
+            name: 'currentBrightness',
+            min: BRI_MIN,
+            max: BRI_MAX,
+            onChange: this.onChange.bind(this),
+            value: this.state.currentBrightness,
+        }
+        return <Slider {...props} />
     }
 }
 

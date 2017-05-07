@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { debounce } from 'lodash';
+
 import { HUE_MIN, HUE_MAX } from './config';
 import ACTIONS from './actions';
 
-import { debounce } from 'lodash';
+import Slider from './Slider';
 
 class Hue extends Component {
     constructor(props) {
@@ -12,7 +14,7 @@ class Hue extends Component {
             currentHue: 0
         }
 
-        this.updateHue = debounce(this.updateHue, 300);
+        this.updateGroupHue = debounce(ACTIONS.UPDATE_GROUP_HUE, 300);
     }
 
     componentDidMount() {
@@ -22,32 +24,21 @@ class Hue extends Component {
     }
 
     onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-        this.updateHue(this.props.id, this.state.currentHue);
-    }
-
-    updateHue(groupId, hueValue) {
-        let { endpoint, method, body } = ACTIONS.UPDATE_GROUP_HUE;
-        endpoint = endpoint.replace('{id}', groupId);
-        body = body.replace('{value}', hueValue);
-
-        fetch(endpoint, { method, body });
+        this.setState({
+            [event.target.name]: event.target.value,
+        }, this.updateGroupHue(this.props.id, this.state.currentHue));
     }
 
     render() {
-        return (
-            <label>
-                <span>HUE</span>
-                <input
-                    type="range"
-                    min={HUE_MIN}
-                    max={HUE_MAX}
-                    name="currentHue"
-                    value={this.state.currentHue}
-                    onChange={event => this.onChange(event)}
-                />
-            </label>
-        )
+        const props = {
+            label: 'HUE',
+            name: 'currentHue',
+            min: HUE_MIN,
+            max: HUE_MAX,
+            onChange: this.onChange.bind(this),
+            value: this.state.currentHue,
+        }
+        return <Slider {...props} />
     }
 }
 

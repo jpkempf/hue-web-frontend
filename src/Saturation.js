@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { SAT_MIN, SAT_MAX } from './config';
-import ACTIONS from './actions';
-
 import { debounce } from 'lodash';
+
+import { SAT_MIN, SAT_MAX } from './config';
+import ENDPOINTS from './endpoints';
+
+import Slider from './Slider';
 
 class Saturation extends Component {
     constructor(props) {
@@ -22,12 +24,13 @@ class Saturation extends Component {
     }
 
     onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-        this.updateSaturation(this.props.id, this.state.currentSaturation);
+        this.setState({
+            [event.target.name]: event.target.value,
+        }, this.updateSaturation(this.props.id, this.state.currentSaturation));
     }
 
     updateSaturation(groupId, saturationValue) {
-        let { endpoint, method, body } = ACTIONS.UPDATE_GROUP_SATURATION;
+        let { endpoint, method, body } = ENDPOINTS.UPDATE_GROUP_SATURATION;
         endpoint = endpoint.replace('{id}', groupId);
         body = body.replace('{value}', saturationValue);
 
@@ -35,19 +38,15 @@ class Saturation extends Component {
     }
 
     render() {
-        return (
-            <label>
-                <span>SAT</span>
-                <input
-                    type="range"
-                    min={SAT_MIN}
-                    max={SAT_MAX}
-                    name="currentSaturation"
-                    value={this.state.currentSaturation}
-                    onChange={event => this.onChange(event)}
-                />
-            </label>
-        )
+        const props = {
+            label: 'SAT',
+            name: 'currentSaturation',
+            min: SAT_MIN,
+            max: SAT_MAX,
+            onChange: this.onChange.bind(this),
+            value: this.state.currentSaturation,
+        }
+        return <Slider {...props} />
     }
 }
 
